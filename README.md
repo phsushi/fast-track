@@ -91,19 +91,4 @@ pub fn buscar(query: String, indice: tauri::State<Indice>) -> Vec<EntradaIndexad
 | Uso de RAM do índice | < 100MB |
 | Latência do atalho global | < 50ms |
 
-## 🧩 Principal desafio técnico até agora
 
-Registro do hotkey global: o Windows associa atalhos a um handle de processo, que às vezes não é liberado imediatamente quando o processo morre (inclusive em hot reload). Solução defensiva — sempre desregistrar antes de registrar, sem panic em caso de erro:
-
-```rust
-let _ = app.global_shortcut().unregister(shortcut);
-if let Err(e) = app.global_shortcut().on_shortcut(shortcut, handler) {
-    eprintln!("Atalho não registrado: {e}");
-}
-```
-
-## 🗺️ Roadmap
-
-- **Fase 2:** indexar `C:\` completo sem bloquear a UI (thread separada + progresso via `emit`); busca fuzzy rápida e relevante
-- **Fase 3:** troca de tema sem reiniciar o app (CSS variables dinâmicas)
-- **Fase 4:** instalador `.msi` com assinatura de código
